@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!-- saved from url=(0068)https://html-classic.itch.zone/html/20172873/index.html?v=1793437114 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#05070d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Geometry Dash">
+  <meta name="application-name" content="Geometry Dash Webport">
+  <meta name="description" content="Play Geometry Dash in your browser with progress saving, online levels, custom music, the level editor, and mobile support.">
+  <title>Geometry Dash Webport</title>
+
+  <link rel="icon" type="image/png" href="https://html-classic.itch.zone/html/20172873/assets/logo.png">
+  <link rel="apple-touch-icon" href="https://html-classic.itch.zone/html/20172873/assets/logo.png">
+  <link rel="preload" as="image" href="./geometry-dash.png" fetchpriority="high">
+  <link rel="preload" as="image" href="https://html-classic.itch.zone/html/20172873/assets/fondo_gd.jpg">
+  <link rel="preconnect" href="https://boomlings.ivan-makarov12341.workers.dev/" crossorigin="">
+  <link rel="preconnect" href="https://api.codetabs.com/" crossorigin="">
+
+  <link rel="stylesheet" href="./app.css">
+  <script src="./app.js" defer=""></script>
+</head>
+<body class="is-mobile-menu is-live">
+  
+
+  <div id="errOverlay" role="alertdialog" aria-modal="true" aria-labelledby="errTitle" hidden="">
+    <div class="error-card">
+      <span class="error-badge">Unexpected error</span>
+      <h2 id="errTitle">Something went wrong</h2>
+      <p id="errText"></p>
+      <div class="error-actions">
+        <button id="errReload" class="btn btn--primary" type="button">Reload page</button>
+        <button id="errDismiss" class="btn btn--ghost" type="button">Dismiss</button>
+      </div>
+    </div>
+  </div>
+
+  <main id="app" aria-label="Geometry Dash game">
+    <header id="logoDock" aria-hidden="true">
+      <img src="./geometry-dash.png" alt="">
+    </header>
+
+    <section id="stage" aria-label="Game viewport">
+      <canvas id="canvas" width="1920" height="1080" tabindex="0" aria-label="Geometry Dash game canvas" style="width: 1267px; height: 713px;"></canvas>
+    </section>
+
+    <footer id="midbar">
+      <div class="status-cluster" title="Live game performance">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="fps" class="fps is-measuring" aria-live="off" title="Measuring frame rate…"><span id="fpsval">6</span><span class="fps-unit">fps</span></span>
+      </div>
+
+      <div class="toolbar">
+        <div class="quality-wrap">
+          <button id="qualityBtn" class="btn btn--tool" type="button" title="Render quality: High · 1920×1080 (100%) · ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)" aria-label="Render quality: High (100%)" aria-haspopup="dialog" aria-expanded="false" aria-controls="qualityMenu">
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M3.4 13.2a7 7 0 0 1 13.2 0" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+              <path d="M10 13.3 13 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path>
+              <circle cx="10" cy="13.3" r="1.4" fill="currentColor"></circle>
+            </svg>
+            <span class="btn-label" id="qualityLabel">High</span>
+            <span id="qualityScale" class="quality-scale">100%</span>
+          </button>
+
+          <div id="qualityMenu" class="quality-menu" role="dialog" aria-label="Render quality settings" hidden="">
+            <div class="quality-head">
+              <span id="qualityTitle" class="quality-title">Render quality</span>
+              <span id="qualityRes" class="quality-res">1920 × 1080</span>
+            </div>
+            <div id="qualityOptions" class="quality-options" role="radiogroup" aria-labelledby="qualityTitle"><button type="button" class="quality-option" role="radio" aria-checked="false" tabindex="-1" data-mode="auto" data-res="Adaptive"><span class="quality-radio" aria-hidden="true"></span><span class="quality-copy"><span class="quality-option-name">Auto</span><span class="quality-option-desc">Matches your display and adapts to FPS</span></span><span class="quality-option-res">Adaptive</span></button><button type="button" class="quality-option" role="radio" aria-checked="true" tabindex="0" data-mode="high" data-res="1920×1080"><span class="quality-radio" aria-hidden="true"></span><span class="quality-copy"><span class="quality-option-name">High</span><span class="quality-option-desc">Sharpest picture, highest GPU load</span></span><span class="quality-option-res">1920×1080</span></button><button type="button" class="quality-option" role="radio" aria-checked="false" tabindex="-1" data-mode="balanced" data-res="1536×864"><span class="quality-radio" aria-hidden="true"></span><span class="quality-copy"><span class="quality-option-name">Balanced</span><span class="quality-option-desc">Slightly softer, much lighter on the GPU</span></span><span class="quality-option-res">1536×864</span></button><button type="button" class="quality-option" role="radio" aria-checked="false" tabindex="-1" data-mode="fast" data-res="1248×702"><span class="quality-radio" aria-hidden="true"></span><span class="quality-copy"><span class="quality-option-name">Fast</span><span class="quality-option-desc">Smooth on integrated graphics</span></span><span class="quality-option-res">1248×702</span></button><button type="button" class="quality-option" role="radio" aria-checked="false" tabindex="-1" data-mode="performance" data-res="960×540"><span class="quality-radio" aria-hidden="true"></span><span class="quality-copy"><span class="quality-option-name">Performance</span><span class="quality-option-desc">Maximum speed on weak hardware</span></span><span class="quality-option-res">960×540</span></button></div>
+            <p id="qualityNote" class="quality-note">High is pinned at 1920×1080. Sharpest picture, highest GPU load.</p>
+            <p id="qualityGpu" class="quality-gpu" title="ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)">GPU: ANGLE (Apple, ANGLE Metal Renderer: Apple M2, Unspecified Version)</p>
+          </div>
+        </div>
+
+        <button id="fsBtn" class="btn btn--tool" type="button" title="Enter fullscreen" aria-label="Enter fullscreen" aria-pressed="false">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M3 7V3h4M13 3h4v4M17 13v4h-4M7 17H3v-4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span class="btn-label">Fullscreen</span>
+        </button>
+        <button id="clearBtn" class="btn btn--tool" type="button" title="Delete saved progress and downloaded online data" aria-label="Reset saved data">
+          <svg viewBox="0 0 20 20" aria-hidden="true">
+            <path d="M4 6h12M8 6V4h4v2M6.5 6l.7 10h5.6l.7-10M8.4 9v4.5M11.6 9v4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+          </svg>
+          <span class="btn-label">Reset data</span>
+        </button>
+      </div>
+    </footer>
+
+    <div id="console" aria-hidden="true"></div>
+  </main>
+
+  <div id="start" class="start is-hidden" hidden="">
+    <div class="start-noise" aria-hidden="true"></div>
+
+    <div id="startCard" class="start-card">
+      <div class="start-logo-wrap">
+        <div class="logo-glow" aria-hidden="true"></div>
+        <img id="logoFly" class="start-logo" src="./geometry-dash.png" alt="Geometry Dash">
+      </div>
+
+      <p class="eyebrow">Play in your browser</p>
+      <h1 class="sr-only">Geometry Dash — Play Online in Your Browser</h1>
+      <p class="start-sub">The classic rhythm platformer, running locally in your browser. No installs, no plugins — your progress saves automatically.</p>
+
+      <ul class="start-features" aria-label="Included features">
+        <li>Progress saving</li>
+        <li>Online levels</li>
+        <li>Custom music</li>
+        <li>Level editor</li>
+        <li>Mobile touch</li>
+      </ul>
+
+      <button id="playBtn" class="play-btn" type="button" disabled="" hidden="">
+        <span class="play-icon" aria-hidden="true"></span>
+        <span class="play-text">Click to play</span>
+        <span class="play-size" id="playSize">328 MB</span>
+      </button>
+
+      <div id="loadPanel" class="load-panel">
+        <div class="load-head">
+          <span id="statusText" class="load-status" role="status" aria-live="polite">Finalising textures…</span>
+          <span id="overallPct" class="load-pct">100%</span>
+        </div>
+
+        <div id="overallBar" class="progress progress--hero" role="progressbar" aria-label="Total download progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+          <span id="overallFill" class="progress-fill" style="width: 100%;"></span>
+        </div>
+
+        <div class="asset-list">
+          <div id="rowWasm" class="asset-row is-done">
+            <div class="asset-meta">
+              <span class="asset-name"><span class="asset-tag">WASM</span> Engine</span>
+              <span id="wasmDetail" class="asset-detail" title="Gzip-compressed engine; decompressed in the browser">13.8 MB · done</span>
+            </div>
+            <div id="wasmBar" class="progress progress--asset" role="progressbar" aria-label="Engine download progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+              <span id="wasmFill" class="progress-fill" style="width: 100%;"></span>
+            </div>
+            <span id="wasmPct" class="asset-pct">100%</span>
+          </div>
+
+          <div id="rowData" class="asset-row is-done">
+            <div class="asset-meta">
+              <span class="asset-name"><span class="asset-tag asset-tag--cyan">DATA</span> Game files</span>
+              <span id="dataDetail" class="asset-detail">314.5 MB · done</span>
+            </div>
+            <div id="dataBar" class="progress progress--asset" role="progressbar" aria-label="Game data download progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+              <span id="dataFill" class="progress-fill" style="width: 100%;"></span>
+            </div>
+            <span id="dataPct" class="asset-pct">100%</span>
+          </div>
+        </div>
+
+        <p id="loadHint" class="load-hint">Assets loaded — booting the game…</p>
+      </div>
+
+      <div id="readyPanel" class="ready-panel">
+        <span class="ready-dot" aria-hidden="true"></span>
+        <span>Ready — have fun!</span>
+      </div>
+
+      <p class="start-footnote">
+        <span class="hint-keyboard"><kbd>Space</kbd> / <kbd>↑</kbd> to jump <span class="dot-sep">·</span> <kbd>Esc</kbd> to pause</span>
+        <span class="hint-touch">Tap the game to jump <span class="dot-sep">·</span> pause and arrows on the left <span class="dot-sep">·</span> compact tools top-right <span class="dot-sep">·</span> keyboard button for text fields</span>
+      </p>
+
+      <details class="about" id="about">
+        <summary>About this webport · Features &amp; FAQ</summary>
+        <div class="about-body">
+          <h2>Play Geometry Dash online in your browser</h2>
+          <p>This fan-made <strong>Geometry Dash webport</strong> runs the game locally through WebAssembly and WebGL2. It is a static site with no install, account, or plugin, and it keeps the original 1920×1080 logical resolution on desktop and mobile.</p>
+
+          <h2>What is included</h2>
+          <ul>
+            <li><strong>Progress saving:</strong> profiles, stats, and local levels autosave every 15 seconds and when you hide or close the tab. Saved data stays in your browser.</li>
+            <li><strong>Online levels and custom music:</strong> search and download levels from the online browser, including Newgrounds songs. Online data survives a reload and resets with a new browser session.</li>
+            <li><strong>Full level editor:</strong> build, test, save, and reload your own levels.</li>
+            <li><strong>Desktop and mobile:</strong> keyboard, mouse, and multi-touch input, plus fullscreen and landscape support where the browser allows it.</li>
+            <li><strong>Browser storage:</strong> progress and downloaded online content are kept in this browser on itch.io.</li>
+          </ul>
+
+          <h2>Frequently asked questions</h2>
+          <h3>Is Geometry Dash free to play in the browser?</h3>
+          <p>Yes. This fan webport is free and needs no account, download, or payment. The first load downloads about 328 MB of game files, then the browser caches them.</p>
+
+          <h3>Does this webport save my progress?</h3>
+          <p>Yes. Normal progress is stored in <code>localStorage</code> and saved automatically. It is tied to the same browser and site origin. Use <strong>Reset data</strong> to clear it.</p>
+
+          <h3>Can I play online levels and download custom music?</h3>
+          <p>Yes. Online levels and their custom songs are stored in IndexedDB for the current browser session, so they survive a reload but are cleared when a new browser session starts. Your normal progress is not affected.</p>
+
+          <h3>Does it include the level editor?</h3>
+          <p>Yes, the full editor is included. You can place objects, test a level, save it locally, and continue editing after a reload.</p>
+
+          <h3>Does it work on mobile?</h3>
+          <p>Yes. The game starts windowed so the on-screen pause, arrow, and keyboard controls stay available. Tap the fullscreen button if you want more room — the controls remain visible there too. Multi-touch is supported, and landscape gives the largest view.</p>
+
+          <h3>What browser do I need?</h3>
+          <p>Use a current version of Chrome, Edge, Firefox, or Safari with WebAssembly, WebGL2, and gzip <code>DecompressionStream</code> support. Older browsers show a clear update message instead of downloading the engine.</p>
+        </div>
+      </details>
+    </div>
+
+    <footer class="start-footer">
+      <span class="start-footer-right">Auto-save · WebAssembly · WebGL2</span>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <div id="rotateHint" class="rotate-hint" role="status" aria-live="polite" aria-hidden="true">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="7" y="2.5" width="10" height="19" rx="2.2" fill="none" stroke="currentColor" stroke-width="1.7"></rect>
+      <path d="M3.2 8.5a9.5 9.5 0 0 1 4-4.4M20.8 8.5a9.5 9.5 0 0 0-4-4.4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"></path>
+      <path d="m3.4 4.4 3.6.2-.2 3.6M20.6 4.4l-3.6.2.2 3.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <span>Rotate your phone for a larger game view</span>
+    <button id="rotateDismiss" type="button" aria-label="Dismiss rotation hint">×</button>
+  </div>
+
+  <noscript>
+    <div class="noscript">JavaScript is required to run Geometry Dash.</div>
+  </noscript>
+
+
+<script defer="" src="./htmlgame.js" type="text/javascript"></script><script src="./gd_web.js" async=""></script></body></html>
